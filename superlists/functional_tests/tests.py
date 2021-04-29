@@ -37,12 +37,15 @@ class NewVisitorTest(LiveServerTestCase):
         inputbox.send_keys('공작깃털 사기')
         # 엔터키를 치면 페이지가 갱신되고 작업목록에 1: 공작깃털 사기"가 추가된다.
         inputbox.send_keys(Keys.ENTER)
-        edith_list_url = self.browser.current_url
-        self.assertRegex(edith_list_url, '/list/.+')
-        self.check_for_row_in_list_table('1: 공작깃털 사기')
-
         import time
         time.sleep(0.1)
+
+        edith_list_url = self.browser.current_url
+        print(edith_list_url)
+        self.assertRegex(edith_list_url, '/lists/.+')
+        self.check_for_row_in_list_table('1: 공작깃털 사기')
+
+        
         #추가 작업을 입력한다.
         inputbox = self.browser.find_element_by_id('id_new_item')
         inputbox.send_keys('공작깃털을 이용해서 그물 만들기')
@@ -58,6 +61,7 @@ class NewVisitorTest(LiveServerTestCase):
         ## 새로운 브라우저 세션을 이용해서 에디스의 정보가 유입되는 것을 방지한다
         self.browser.quit()
         self.browser = webdriver.Firefox()
+        # self.browser.implicitly_wait(3)
 
         # 프란시스가 홈페이지에 접속한다
         # 에디스의 리스트는 보이지 않는다
@@ -71,9 +75,10 @@ class NewVisitorTest(LiveServerTestCase):
         inputbox.send_keys('우유 사기')
         inputbox.send_keys(Keys.ENTER)
 
+        time.sleep(0.1)
         # 프란시스가 전용 URL을 취득한다
         fransis_list_url = self.browser.current_url
-        self.assertRegex(fransis_list_url, '/list/.+')
+        self.assertRegex(fransis_list_url, '/lists/.+')
         self.assertNotEqual(fransis_list_url, edith_list_url)
 
         # 에디스가 입력한 흔적이 없다는 것을 다시 확인한다
