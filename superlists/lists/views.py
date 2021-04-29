@@ -9,5 +9,4 @@ def home_page(request):
         return redirect('/')
 
     items = Item.objects.all()
-    print(items)
     return render(request, 'home.html', {'items': items})
